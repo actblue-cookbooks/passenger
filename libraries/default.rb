@@ -3,8 +3,8 @@
 # tell is is the gem path. These functions will start with a gem
 # command, and find the desired things.
 
-class Chef
-  class Recipe
+#class Chef
+#  class Recipe
 
     def passenger_find_executable(executable, gem="/usr/bin/gem", version=nil)
       # this has an unfortunate amount of hacking around gem bogusity.
@@ -12,7 +12,9 @@ class Chef
       # not. So we're going to canonicalize it.
       version_arg = version.nil? ? "" : "--version #{version}"
       bin = `#{gem} contents passenger #{version_arg}`.split("\n").select { |i| i.match("bin/#{executable}$") }.first
-      if bin.match("^/")
+      if bin.nil?
+        return nil
+      elsif bin.match("^/")
         return bin
       else
         gemdir = `#{gem} environment`.split("\n").map { |i| i.gsub!(/.*INSTALLATION DIRECTORY:\s*/, "") }.compact
@@ -35,5 +37,5 @@ class Chef
     end
 
 
-  end
-end
+#  end
+#end
