@@ -8,6 +8,7 @@ action :create do
   bash "install passenger/apache2 (#{new_resource.gem}" do
     user "root"
     code "#{passenger_find_executable("passenger-install-apache2-module", new_resource.gem, new_resource.version)} --auto"
+    environment({ 'PATH' => "#{passenger_find_bindir(new_resource.gem, new_resource.version)}:/usr/bin:/bin:/usr/sbin:/sbin" })
     creates passenger_module_path(new_resource.gem, new_resource.version)
   end
 

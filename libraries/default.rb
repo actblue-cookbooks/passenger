@@ -22,6 +22,11 @@
       end
     end
 
+    def passenger_find_bindir(gem="/usr/bin/gem", version=nil)
+      `#{gem} environment`.split("\n").map { |i| i.gsub!(/.*EXECUTABLE DIRECTORY:\s*/, "") }.compact.first
+    end
+
+
     def passenger_find_root_path(gem="/usr/bin/gem", version=nil)
       pc = passenger_find_executable("passenger-config", gem, version)
       `#{pc} --root`.chomp
