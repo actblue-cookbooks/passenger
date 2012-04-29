@@ -1,4 +1,4 @@
-<% node[:passenger][:conf].each do |setting, value| -%> 
+<% node[:passenger][:conf].sort.each do |setting, value| -%> 
 <%= "Passenger"+setting.gsub(/(^|_|\s+)([a-z])/){$2.upcase} %> <%= value %>
 <% end -%>
 
