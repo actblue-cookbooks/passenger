@@ -1,18 +1,20 @@
 action :create do
 
-  passenger_install "passenger/#{new_resource.version} for apache2 (#{new_resource.gem})" do
+  p = passenger_install "passenger/#{new_resource.version} for apache2 (#{new_resource.gem})" do
     version new_resource.version
     gem new_resource.gem
+    action :nothing
   end
-
-  bash "install passenger/apache2 (#{new_resource.gem}" do
-    user "root"
-    code "#{passenger_find_executable("passenger-install-apache2-module", new_resource.gem, new_resource.version)} --auto"
-    environment({ 'PATH' => "#{passenger_find_bindir(new_resource.gem, new_resource.version)}:/usr/bin:/bin:/usr/sbin:/sbin" })
-    creates passenger_module_path(new_resource.gem, new_resource.version)
-  end
+  p.run_action(:create)
 
   if ::File.exists?(passenger_find_root_path(new_resource.gem, new_resource.version) )
+
+    bash "install passenger/apache2 (#{new_resource.gem}" do
+      user "root"
+      code "#{passenger_find_executable("passenger-install-apache2-module", new_resource.gem, new_resource.version)} --auto"
+      environment({ 'PATH' => "#{passenger_find_bindir(new_resource.gem, new_resource.version)}:/usr/bin:/bin:/usr/sbin:/sbin" })
+      creates passenger_module_path(new_resource.gem, new_resource.version)
+    end
 
     # Generate the apache snippet by asking passenger to do it for us.
     # This is a little weird, since it will use the first ruby on your
@@ -43,6 +45,8 @@ action :create do
 
     apache_module "passenger"
 
+  else
+    Chef::Log.warn "Couldn't find passenger (#{new_resource.version}) install with #{new_resource.gem}"
   end
 
 end
