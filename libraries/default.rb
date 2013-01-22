@@ -10,7 +10,7 @@
       # this has an unfortunate amount of hacking around gem bogusity.
       # sometimes gem returns an absolute path, sometime it does
       # not. So we're going to canonicalize it.
-      version_arg = version.nil? ? "" : "--version #{version}"
+      version_arg = version.nil? ? "" : "--version '#{version}'"
       bin = `#{gem} contents passenger #{version_arg}`.split("\n").select { |i| i.match("bin/#{executable}$") }.first
       if bin.nil?
         return nil
