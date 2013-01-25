@@ -7,7 +7,8 @@ action :create do
   end
   p.run_action(:create)
 
-  if ::File.exists?(passenger_find_root_path(new_resource.gem, new_resource.version) )
+  path = passenger_find_root_path(new_resource.gem, new_resource.version)
+  if path && ::File.exists?(path)
 
     bash "install passenger/apache2 (#{new_resource.gem}" do
       user "root"

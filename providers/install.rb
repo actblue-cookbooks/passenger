@@ -3,7 +3,7 @@ action :create do
     gem_binary new_resource.gem
     package_name 'passenger'
     version new_resource.version
-  end
+  end.run_action(:install)
 
 #  unless new_resource.options[:bundler_skip]
 #    gem_package "bundler (#{new_resource.gem})" do
