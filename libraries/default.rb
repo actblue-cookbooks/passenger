@@ -35,7 +35,11 @@
     end
 
     def passenger_module_path(gem="/usr/bin/gem", version=nil)
-      passenger_find_root_path(gem, version) + "/ext/apache2/mod_passenger.so"
+      build_dir = case version
+                  when /^4\./; 'buildout'
+                  else; 'ext'
+                  end
+      passenger_find_root_path(gem, version) + "/#{build_dir}/apache2/mod_passenger.so"
     end
 
 
