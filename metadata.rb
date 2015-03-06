@@ -1,2 +1,3 @@
-description "passenger"
-version "0.0.1"
+name 'passenger'
+description 'passenger'
+version '0.0.1'
